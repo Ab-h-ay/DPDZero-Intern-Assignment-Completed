@@ -3,6 +3,28 @@
 This project is part of the DPDZero DevOps Internship assignment. It demonstrates how to containerize and orchestrate two backend services (written in Go and Python) using Docker and Docker Compose, and route requests via an Nginx reverse proxy.
 
 ---
+---
+
+## ☁️ AWS Infrastructure Setup
+
+The project was deployed and tested on an **Ubuntu-based AWS EC2 instance** using the following steps:
+
+### ✅ 1. Launch EC2 Instance
+
+- Go to [AWS EC2 Dashboard](https://console.aws.amazon.com/ec2/)
+- Click **"Launch Instance"**
+- **AMI**: Ubuntu Server 22.04 LTS (or latest stable)
+- **Instance type**: t2.micro (Free Tier eligible)
+- **Key pair**: Create new or use existing to SSH
+- **Security Group**:
+  - Allow inbound traffic on:
+    - **22** (SSH)
+    - **8080** (App access via Nginx)
+    -  allow **80** and **443** for web apps)
+    -  **8001-8002** (for ping and hello)
+
+### ✅ 2. SSH into EC2 Instance
+ssh -i your-key.pem ubuntu@<EC2_PUBLIC_IP>
 
 ## 📦 Tech Stack
 
