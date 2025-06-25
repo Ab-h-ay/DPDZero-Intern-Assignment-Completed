@@ -1,7 +1,7 @@
 FROM python:3.10-alpine
 
 # Install system packages for building deps
-RUN apk add --no-cache curl bash gcc musl-dev libffi-dev
+RUN apk add --no-cache curl bash wget gcc musl-dev libffi-dev
 
 # Install uv (fast Python package manager)
 RUN curl -Ls https://astral.sh/uv/install.sh | sh

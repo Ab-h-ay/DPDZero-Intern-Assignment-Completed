@@ -1,11 +1,10 @@
 FROM golang:1.22-alpine
 
+RUN apk add --no-cache wget
+
 WORKDIR /app
 
 COPY . .
-
-# Optional: only if go.mod not present
-# RUN go mod init service1
 
 RUN go build -o main .
 

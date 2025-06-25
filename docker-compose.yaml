@@ -2,35 +2,44 @@ version: '3.8'
 
 services:
   service1:
-    build:
-      context: ./service_1
-    container_name: service1
-    expose:
-      - "8001"
+    build: ./service_1
+    ports:
+      - "8001:8001"
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:8001/ping"]
+      interval: 5s
+      timeout: 2s
+      retries: 2
     networks:
       - backend
 
   service2:
-    build:
-      context: ./service_2
-    container_name: service2
-    expose:
-      - "8002"
+    build: ./service_2
+    ports:
+      - "8002:8002"
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:8002/ping"]
+      interval: 5s
+      timeout: 2s
+      retries: 2
     networks:
       - backend
 
   nginx:
     build:
       context: ./nginx
-    container_name: nginx
     ports:
       - "8080:80"
     depends_on:
-      - service1
-      - service2
+      service1:
+        condition: service_healthy
+      service2:
+        condition: service_healthy
     networks:
       - backend
 
 networks:
   backend:
+    driver: bridge
+    name: dpdzero-backend-network
 
