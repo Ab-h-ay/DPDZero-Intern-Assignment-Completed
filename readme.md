@@ -1,101 +1,78 @@
-### 🧪 **DevOps Intern Assignment: Nginx Reverse Proxy + Docker**
+# 🚀 DPDZero Intern Assignment – Full Dockerized Microservices with Nginx Reverse Proxy
 
-You are expected to set up a simple system where:
-
-1. **Two Dockerized backend services** (can be dummy services) run on different ports.
-2. An **Nginx reverse proxy** (also in a Docker container) routes:
-
-   * `/service1` requests to backend service 1
-   * `/service2` requests to backend service 2
-3. All services must be accessible via a single port (e.g., `localhost:8080`).
+This project is part of the DPDZero DevOps Internship assignment. It demonstrates how to containerize and orchestrate two backend services (written in Go and Python) using Docker and Docker Compose, and route requests via an Nginx reverse proxy.
 
 ---
 
-### ✅ **Requirements**
+## 📦 Tech Stack
 
-1. Use Docker Compose to bring up the entire system.
-2. Each backend service should respond with a JSON payload like:
-
-   ```json
-   {"service": "service1"}
-   ```
-3. The Nginx config should support:
-
-   * Routing based on URL path prefix (`/service1`, `/service2`)
-   * Logging incoming requests with timestamp and path
-4. The system should work with a single command:
-
-   ```bash
-   docker-compose up --build
-   ```
-5. Bonus: Add a health check for both services and show logs of successful routing.
+- **Golang (Service 1)** – Simple HTTP server with `/ping` and `/hello` endpoints
+- **Python + Flask (Service 2)** – REST API with `/ping` and `/hello`
+- **Nginx** – Reverse proxy to route requests to the two services
+- **Docker & Docker Compose** – Containerization and orchestration
+- **Bridge Networking** – All services are connected through Docker’s internal bridge network
 
 ---
 
-### 📁 Suggested Project Structure
-
-```
-.
+## 📁 Project Structure
+DPDZero-Intern-Assignment/
 ├── docker-compose.yml
-├── nginx
-│   ├── default.conf
-│   └── Dockerfile
-├── service_1
-│   ├── app.py
-│   └── Dockerfile
-├── service_2
-│   ├── app.py
-│   └── Dockerfile
+├── nginx/
+│ ├── Dockerfile
+│ └── nginx.conf
+├── service_1/
+│ ├── Dockerfile
+│ └── main.go
+├── service_2/
+│ ├── Dockerfile
+│ ├── app.py
+│ └── requirements.txt
 └── README.md
-```
 
 ---
 
-### 📦 Tech Constraints
+## ⚙️ Technologies Used
 
-* Nginx must run in a Docker container, not on host
-* Use bridge networking (no host networking)
-
----
-
-### 📝 Submission Instructions
-
-1. Upload your project to GitHub or GitLab.
-2. Include a short `README.md` with:
-
-   * Setup instructions
-   * How routing works
-   * Any bonus you implemented
-3. Deadline: **1 week**
-4. Bonus points for:
-
-   * Logging clarity
-   * Clean and modular Docker setup
-   * Healthcheck or automated test script
+- Docker
+- Docker Compose
+- Nginx
+- Python 3.10 + Flask
+- Golang 1.22 (Alpine)
+- Alpine Linux for lightweight images
 
 ---
 
-### ❓FAQs
+## 🔧 Setup Instructions
 
-**Q: Is this a full-time role?**
-Yes. You would need to be in office in Bangalore.
+> 💡 Prerequisites:
+> - Docker & Docker Compose installed
+> - Port `8080` open on your system or EC2 instance
 
-**Q: Is there a stipend?**
-Yes. 20k INR per month
+### ✅ To Build and Run Everything:
 
-**Q: How many positions are open?**
-Two positions are open.
+git clone https://github.com/<your-username>/DPDZero-Intern-Assignment.git
+cd DPDZero-Intern-Assignment
+docker-compose up --build
 
-**Q: I am still in college. Can I apply?**
-Unfortunately, we are looking for post-college candidates.
+🌐 API Endpoints
+Path	Service	Description
+/service1/ping	Golang	Health check
+/service1/hello	Golang	Returns Hello message
+/service2/ping	Flask	Health check
+/service2/hello	Flask	Returns Hello message
 
-**Q: Can I reach out for doubts?**
-No — due to the volume of submissions. Please use your creativity and assumptions where needed.
+Example (on local or EC2):
+http://localhost:8080/service1/hello
+http://localhost:8080/service2/hello
 
-**Q: Can I use ChatGPT or Copilot?**
-Yes, feel free to use AI tools — we care about your implementation and understanding.
+If hosted on EC2:
+http://<your-ec2-public-ip>:8080/service2/ping
 
-**Q: This feels like a lot for an intern assignment.**
-We agree it’s non-trivial — we’ve received many applications, so this helps us filter based on quality.
+🧪 Testing
+After running the containers, test with:
+curl http://localhost:8080/service1/ping
+curl http://localhost:8080/service2/hello
 
-
+🧼 Cleanup
+Stop and remove containers, networks, and images:
+docker-compose down --volumes --remove-orphans
